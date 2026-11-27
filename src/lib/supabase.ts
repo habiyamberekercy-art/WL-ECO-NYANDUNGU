@@ -19,6 +19,17 @@ export type ReportStatus = 'pending' | 'investigating' | 'resolved' | 'dismissed
 export type UserRole = 'admin' | 'manager' | 'public' | 'researcher' | 'government';
 export type AlertStatus = 'active' | 'resolved';
 
+export interface AccessRequest {
+  id: string;
+  full_name: string;
+  email: string;
+  organization: string;
+  reason: string;
+  status: 'pending' | 'approved' | 'declined';
+  reviewed_at: string | null;
+  created_at: string;
+}
+
 export interface Alert {
   id: string;
   source: 'sensor' | 'report';
@@ -47,6 +58,7 @@ export interface Profile {
   organization: string | null;
   created_at: string;
   suspended: boolean;
+  must_change_password: boolean;
   avatar_url: string | null;
 }
 

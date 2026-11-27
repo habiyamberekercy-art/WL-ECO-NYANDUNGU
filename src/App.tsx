@@ -8,6 +8,7 @@ import { WifiOff, RotateCw } from 'lucide-react';
 // Public
 import PublicSite from '@/components/PublicSite';
 import LoginPage from '@/components/LoginPage';
+import ChangePasswordScreen from '@/components/ChangePasswordScreen';
 
 // Route guards
 import { AdminGuard, PublicOnly, AuthGuard } from '@/components/RouteGuards';
@@ -63,6 +64,9 @@ function ConnectionBanner() {
 }
 
 function AppRoutes() {
+  const { profile } = useAuth();
+  if (profile?.must_change_password) return <ChangePasswordScreen />;
+
   return (
     <Routes>
       {/* Public site — guests see the public portal, logged-in users get redirected */}

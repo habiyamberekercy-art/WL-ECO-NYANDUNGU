@@ -3,6 +3,7 @@ import { FileText, Search, Trash2, X, Eye, AlertTriangle, Clock, Activity as Act
 import { useData } from '@/lib/data-context';
 import { supabase, type IncidentReport, type ParkZone, type ActivityLog, type ReportStatus } from '@/lib/supabase';
 import { REPORT_TYPE_CONFIG, REPORT_STATUS_CONFIG, SEVERITY_CONFIG, timeAgo, formatDateTime } from '@/lib/types';
+import { invokeAdmin } from '@/lib/admin-api';
 
 export default function AdminReports() {
   const { reports, zones, reload } = useData();
@@ -39,15 +40,9 @@ export default function AdminReports() {
 
   const runReportAction = async (body: Record<string, string>) => {
     setActionError(null);
-    const { data, error } = await supabase.functions.invoke('report-admin', { body });
-    if (error || !data?.ok) {
-      let message = 'The action could not be completed. Please try again.';
-      const ctx = (error as { context?: Response } | null)?.context;
-      if (ctx && typeof ctx.json === 'function') {
-        const payload = await ctx.json().catch(() => null);
-        if (payload?.error) message = payload.error;
-      }
-      setActionError(message);
+    const { error } = await invokeAdmin('report-admin', body);
+    if (error) {
+      setActionError(error);
       return false;
     }
     return true;

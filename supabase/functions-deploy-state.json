@@ -4,6 +4,10 @@
     "report-admin": {
       "hasChanged": false,
       "hash": "22981736494c1c43db0ab5080ca4c61ca428232a893bac20fec3a323056d8ff2"
+    },
+    "admin-users": {
+      "hasChanged": false,
+      "hash": "2406bcb3b0d3711e0ab56c2564df7293f7905a6b52b59fb8985bd7123293161a"
     }
   }
 }

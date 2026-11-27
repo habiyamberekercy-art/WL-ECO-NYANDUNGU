@@ -22,7 +22,7 @@ interface AuthContextValue {
   profile: Profile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string, fullName: string, role: string) => Promise<{ error: string | null }>;
+  refreshProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -31,7 +31,7 @@ const AuthContext = createContext<AuthContextValue>({
   profile: null,
   loading: true,
   signIn: async () => ({ error: 'not implemented' }),
-  signUp: async () => ({ error: 'not implemented' }),
+  refreshProfile: async () => {},
   signOut: async () => {},
 });
 
@@ -97,19 +97,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null };
   }, [fetchProfile]);
 
-  const signUp = useCallback(async (email: string, password: string, fullName: string, role: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, role },
-      },
-    });
-    if (error) return { error: error.message };
-    if (data.user) {
-      await fetchProfile(data.user.id);
-    }
-    return { error: null };
+  const refreshProfile = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) await fetchProfile(user.id);
   }, [fetchProfile]);
 
   const signOut = useCallback(async () => {
@@ -118,7 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, profile, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ session, profile, loading, signIn, refreshProfile, signOut }}>
       {children}
     </AuthContext.Provider>
   );

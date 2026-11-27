@@ -1,4 +1,4 @@
-import type { EcoStatus, ReportType, ReportSeverity, ReportStatus, ZoneType, PondType, Language, Persona } from './supabase';
+import type { EcoStatus, ReportType, ReportSeverity, ReportStatus, ZoneType, PondType, Language, Persona, UserRole } from './supabase';
 
 export const STATUS_CONFIG: Record<EcoStatus, { label: string; color: string; bgColor: string; borderColor: string; dotColor: string; hex: string; description: string }> = {
   healthy: {
@@ -74,6 +74,14 @@ export const REPORT_STATUS_CONFIG: Record<ReportStatus, { label: string; color: 
   investigating: { label: 'Under Investigation', color: 'text-blue-700 bg-blue-50 border-blue-200' },
   resolved: { label: 'Resolved', color: 'text-emerald-700 bg-emerald-50 border-emerald-200' },
   dismissed: { label: 'Dismissed', color: 'text-slate-500 bg-slate-50 border-slate-200' },
+};
+
+export const ROLE_CONFIG: Record<UserRole, { label: string; color: string; description: string }> = {
+  admin: { label: 'Administrator', color: 'text-slate-300 bg-slate-700 border-slate-600', description: 'Full control, including accounts and settings' },
+  manager: { label: 'Officer', color: 'text-blue-300 bg-blue-500/20 border-blue-500/30', description: 'Park staff: monitoring dashboard and telemetry' },
+  researcher: { label: 'Researcher', color: 'text-sky-300 bg-sky-500/20 border-sky-500/30', description: 'Research partners: portal and data access' },
+  government: { label: 'Government', color: 'text-amber-300 bg-amber-500/20 border-amber-500/30', description: 'Government partners: portal and data access' },
+  public: { label: 'Citizen', color: 'text-teal-300 bg-teal-500/20 border-teal-500/30', description: 'Community member: portal access' },
 };
 
 // Pollution index health thresholds
